@@ -151,6 +151,11 @@ const Home = () => {
     return md5(JSON.stringify(stateToHash));
   };
 
+  const isValidTestKey = (str: string): boolean => {
+    const unixTimestampRegex = /^test_\d{13}$/;
+    return unixTimestampRegex.test(str);
+  };
+
   const saveStateToLocalStorage = () => {
     const state: State = {
       testId,
@@ -170,20 +175,28 @@ const Home = () => {
       state.stateHash = currentHash;
       const stateJson = JSON.stringify(state);
       const stateBase64 = toBase64(stateJson);
+      const allKeys = Object.keys(localStorage);
+      const testKeys = allKeys.filter(isValidTestKey);
+      const testKeysSorted = testKeys.sort();
+      // Remove the oldest keys if there are more than 4 elements
+      if (testKeysSorted.length > 4) {
+        const keysToRemove = testKeysSorted.slice(0, testKeysSorted.length - 4);
+        keysToRemove.forEach((key) => localStorage.removeItem(key));
+      }
       localStorage.setItem(testId, stateBase64);
+      
     }
   };
 
   const handleStart = async () => {
     await loadQuestions(); // Load and shuffle questions when starting a new test
-    const newTestId = Date.now().toString();
+    const newTestId = `test_${Date.now().toString()}`;
     setTestId(newTestId);
     const start = Date.now();
     setStartTime(start);
     setTestStarted(true);
     setElapsedTime(0);
     Cookies.set('quizState', newTestId, { expires: 1 });
-    saveStateToLocalStorage();
   };
 
   const handleSubmit = () => {
@@ -229,7 +242,6 @@ const Home = () => {
     const newAnswers = [...answers];
     newAnswers[currentQuestionIndex] = index;
     setAnswers(newAnswers);
-    saveStateToLocalStorage();
   };
 
   const reportBadQuestion = () => {
@@ -240,7 +252,6 @@ const Home = () => {
     }
     currentQuestion.complaints++;
     setQuestions(updatedQuestions);
-    saveStateToLocalStorage();
     handleNext();
   };
 
@@ -253,7 +264,7 @@ const Home = () => {
     setScore(0);
     setElapsedTime(0);
     setQuestionTimes([]);
-    const newTestId = Date.now().toString();
+    const newTestId = `test_${Date.now().toString()}`;
     setTestId(newTestId);
     await loadQuestions(); // Load new set of questions
   };
