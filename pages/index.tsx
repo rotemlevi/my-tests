@@ -114,7 +114,8 @@ const Home = () => {
 
   const loadQuestions = async () => {
     try {
-      const response = await axios.get('/questions.json');
+      const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '';
+      const response = await axios.get(`${basePath}/questions.json`);
       let filteredQuestions = response.data.filter((question: Question) => !question.complaints || question.complaints <= 1);
       filteredQuestions = shuffleArray(filteredQuestions);
       setQuestions(filteredQuestions);
