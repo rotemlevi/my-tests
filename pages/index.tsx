@@ -116,6 +116,7 @@ const Home = () => {
     try {
       const isProd = process.env.NODE_ENV === 'production';
       const basePath = isProd ? '/my-tests' : '';
+      console.log("isProd: ", isProd);
       console.log('Base Path:', basePath); // Debugging
       const response = await axios.get(`${basePath}/questions.json`);
       let filteredQuestions = response.data.filter((question: Question) => !question.complaints || question.complaints <= 1);
