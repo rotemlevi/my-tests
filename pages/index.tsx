@@ -366,7 +366,7 @@ const Home = () => {
           {results.map((result, index) => (
             <div key={index} style={{ backgroundColor: result.isCorrect ? '#d4edda' : '#f8d7da', padding: '20px', marginBottom: '10px', borderRadius: '5px' }}>
               <p>{result.question}</p>
-              <p>התשובה שלך: {questions[index].options[result.userAnswer]}</p>
+              <p>התשובה שלך: { questions[index].options[result.userAnswer] ?? "לא נבחרה תשובה"}</p>
               <p>התשובה הנכונה: {questions[index].options[result.correct]}</p>
               <p>{result.isCorrect ? 'נכון' : 'לא נכון'}</p>
               <p>זמן שלקח לענות: {result.timeTaken.toFixed(2)} דקות</p>
