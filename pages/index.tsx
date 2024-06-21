@@ -72,7 +72,6 @@ const Home = () => {
       if (savedStateBase64) {
         const savedStateJson = fromBase64(savedStateBase64);
         const state: State = JSON.parse(savedStateJson);
-        console.log('Loaded state from local storage:', state);
         setTestId(state.testId);
         setCurrentQuestionIndex(state.currentQuestionIndex);
         setQuestions(state.questions);
@@ -116,8 +115,6 @@ const Home = () => {
     try {
       const isProd = process.env.NODE_ENV === 'production';
       const basePath = isProd ? '/my-tests' : '';
-      console.log("isProd: ", isProd);
-      console.log('Base Path:', basePath); // Debugging
       const response = await axios.get(`${basePath}/questions.json`);
       let filteredQuestions = response.data.filter((question: Question) => !question.complaints || question.complaints <= 1);
       filteredQuestions = shuffleArray(filteredQuestions);
@@ -169,13 +166,11 @@ const Home = () => {
     };
     const currentHash = calculateStateHash(state);
     if (stateHash !== currentHash) {
-      console.log('Saving state to local storage:', state);
       setStateHash(currentHash);
       state.stateHash = currentHash;
       const stateJson = JSON.stringify(state);
       const stateBase64 = toBase64(stateJson);
       localStorage.setItem(testId, stateBase64);
-      console.log('State saved to local storage:', localStorage.getItem(testId)); // Debug log to check if the state is being set
     }
   };
 
@@ -192,11 +187,9 @@ const Home = () => {
   };
 
   const handleSubmit = () => {
-    const endTime = Date.now();
     const calculatedResults = questions.map((q, index) => {
       const userAnswer = answers[index];
       const isCorrect = userAnswer === q.correctAnswer;
-      const timeTaken = (endTime - startTime) / 60000;
       return {
         question: q.question,
         correct: q.correctAnswer,
@@ -236,7 +229,6 @@ const Home = () => {
     const newAnswers = [...answers];
     newAnswers[currentQuestionIndex] = index;
     setAnswers(newAnswers);
-    console.log('Option changed:', newAnswers);
     saveStateToLocalStorage();
   };
 
@@ -347,7 +339,7 @@ const Home = () => {
                   >
                     שלח
                   </button>
-                <button onClick={reportBadQuestion} style={{ padding: '10px 20px', backgroundColor: '#FF5733', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer', marginLeft: '10px' }}>
+                <button disabled onClick={reportBadQuestion} style={{ padding: '10px 20px', backgroundColor: '#FF5733', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer', marginLeft: '10px' }}>
                   דווח על שאלה
                 </button>
                 <button onClick={resetGame} style={{ padding: '10px 20px', backgroundColor: '#f44336', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer', marginLeft: '10px' }}>
