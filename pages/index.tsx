@@ -363,7 +363,8 @@ const Home = () => {
             </div>
           ))}
           <h3 className={styles.finalScore}>ניקוד סופי: {score} מתוך {questions.length}</h3>
-          <button onClick={resetGame} className={styles.button}>חזור</button>
+          <button onClick={resetGame} 
+            className={`${styles.button} ${styles.navButton}`}>חזור</button>
         </div>
       )}
     </div>
