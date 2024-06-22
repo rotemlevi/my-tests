@@ -1,4 +1,5 @@
 .container {
+    direction: rtl;
     padding: 20px;
     font-family: Arial, sans-serif;
 }
