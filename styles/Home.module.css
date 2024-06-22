@@ -18,12 +18,12 @@
 
 .questionContainer {
     background-color: #f9f9f9;
-    padding: 20px;
+    padding: 5px;
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     direction: rtl;
     width: 100%;
-    max-width: 600px;
+    max-height: 600px;
     min-height: 300px; /* Ensure a minimum height */
     display: flex;
     flex-direction: column;
@@ -87,6 +87,11 @@
 .navButton {
     background-color: #2196F3;
 }
+
+.startButton {
+    background-color: #2196F3;
+}
+
 
 .reportButton {
     background-color: #FF5733;

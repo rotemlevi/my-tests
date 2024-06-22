@@ -185,7 +185,7 @@ const Home = () => {
         keysToRemove.forEach((key) => localStorage.removeItem(key));
       }
       localStorage.setItem(testId, stateBase64);
-      
+
     }
   };
 
@@ -284,7 +284,12 @@ const Home = () => {
         <>
           {!testStarted ? (
             <div className={styles.startContainer}>
-              <button onClick={handleStart} className={styles.button}>התחל מבחן</button>
+              <button
+                onClick={handleStart}
+                className={`${styles.button} ${styles.startButton}`}
+              >
+                התחל מבחן
+              </button>
             </div>
           ) : (
             <div className={styles.testContainer}>
@@ -308,35 +313,35 @@ const Home = () => {
                 ))}
               </div>
               <div className={styles.buttonContainer}>
-                <button 
-                  onClick={handlePrev} 
-                  disabled={currentQuestionIndex < 1} 
-                  className={`${styles.button} ${currentQuestionIndex < 1 ? styles.disabledButton : styles.navButton  }`}
+                <button
+                  onClick={handlePrev}
+                  disabled={currentQuestionIndex < 1}
+                  className={`${styles.button} ${currentQuestionIndex < 1 ? styles.disabledButton : styles.navButton}`}
                 >
                   הקודם
                 </button>
-                <button 
-                  onClick={handleNext} 
-                  disabled={currentQuestionIndex >= questions.length - 1} 
+                <button
+                  onClick={handleNext}
+                  disabled={currentQuestionIndex >= questions.length - 1}
                   className={`${styles.button} ${currentQuestionIndex >= questions.length - 1 ? styles.disabledButton : styles.navButton}`}
                 >
                   הבא
                 </button>
-                <button 
-                  onClick={handleSubmit} 
-                  disabled={currentQuestionIndex !== questions.length - 1} 
+                <button
+                  onClick={handleSubmit}
+                  disabled={currentQuestionIndex !== questions.length - 1}
                   className={`${styles.button} ${currentQuestionIndex !== questions.length - 1 ? styles.disabledButton : styles.submitButton}`}
                 >
                   שלח
                 </button>
-                <button 
-                  onClick={reportBadQuestion} 
+                <button
+                  onClick={reportBadQuestion}
                   className={`${styles.button} ${styles.reportButton}`}
                 >
                   דווח על שאלה
                 </button>
-                <button 
-                  onClick={resetGame} 
+                <button
+                  onClick={resetGame}
                   className={`${styles.button} ${styles.resetButton}`}
                 >
                   התחל מבחן חדש
