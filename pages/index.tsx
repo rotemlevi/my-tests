@@ -4,6 +4,8 @@ import Cookies from 'js-cookie';
 import md5 from 'md5';
 import styles from '../styles/Home.module.css';
 
+const isProd = process.env.NODE_ENV === 'production';
+
 function toBase64(str: string): string {
   const uint8Array = new TextEncoder().encode(str);
   let binaryString = '';
@@ -113,8 +115,7 @@ const Home = () => {
   }, [testId, currentQuestionIndex, questions, answers, questionTimes, testStarted, startTime, initialTime, elapsedTime]);
 
   const loadQuestions = async () => {
-    try {
-      const isProd = process.env.NODE_ENV === 'production';
+    try {      
       const basePath = isProd ? '/my-tests' : '';
       const response = await axios.get(`${basePath}/questions.json`);
       let filteredQuestions = response.data.filter((question: Question) => !question.complaints || question.complaints <= 1);
@@ -185,7 +186,6 @@ const Home = () => {
         keysToRemove.forEach((key) => localStorage.removeItem(key));
       }
       localStorage.setItem(testId, stateBase64);
-
     }
   };
 
@@ -284,12 +284,7 @@ const Home = () => {
         <>
           {!testStarted ? (
             <div className={styles.startContainer}>
-              <button
-                onClick={handleStart}
-                className={`${styles.button} ${styles.startButton}`}
-              >
-                התחל מבחן
-              </button>
+              <button onClick={handleStart} className={`${styles.button} ${styles.startButton}`}>התחל מבחן</button>
             </div>
           ) : (
             <div className={styles.testContainer}>
@@ -299,7 +294,7 @@ const Home = () => {
               <div className={styles.questionContainer}>
                 <p className={styles.question}>שאלה {currentQuestionIndex + 1}: {questions[currentQuestionIndex]?.question}</p>
                 {questions[currentQuestionIndex]?.options.map((option, i) => (
-                  <div key={i} className={styles.option}>
+                  <label key={i} className={styles.option}>
                     <input
                       type="radio"
                       name={`question-${currentQuestionIndex}`}
@@ -308,40 +303,40 @@ const Home = () => {
                       onChange={() => handleOptionChange(i)}
                       className={styles.radio}
                     />
-                    <label className={styles.fixedLabel}>{option}</label>
-                  </div>
+                    <span className={styles.fixedLabel}>{option}</span>
+                  </label>
                 ))}
               </div>
               <div className={styles.buttonContainer}>
-                <button
-                  onClick={handlePrev}
-                  disabled={currentQuestionIndex < 1}
+                <button 
+                  onClick={handlePrev} 
+                  disabled={currentQuestionIndex < 1} 
                   className={`${styles.button} ${currentQuestionIndex < 1 ? styles.disabledButton : styles.navButton}`}
                 >
                   הקודם
                 </button>
-                <button
-                  onClick={handleNext}
-                  disabled={currentQuestionIndex >= questions.length - 1}
+                <button 
+                  onClick={handleNext} 
+                  disabled={currentQuestionIndex >= questions.length - 1} 
                   className={`${styles.button} ${currentQuestionIndex >= questions.length - 1 ? styles.disabledButton : styles.navButton}`}
                 >
                   הבא
                 </button>
-                <button
-                  onClick={handleSubmit}
-                  disabled={currentQuestionIndex !== questions.length - 1}
+                <button 
+                  onClick={handleSubmit} 
+                  disabled={currentQuestionIndex !== questions.length - 1} 
                   className={`${styles.button} ${currentQuestionIndex !== questions.length - 1 ? styles.disabledButton : styles.submitButton}`}
                 >
                   שלח
                 </button>
                 <button
-                  onClick={reportBadQuestion}
+                  onClick={reportBadQuestion} 
                   className={`${styles.button} ${styles.reportButton}`}
                 >
                   דווח על שאלה
                 </button>
                 <button
-                  onClick={resetGame}
+                  onClick={resetGame} 
                   className={`${styles.button} ${styles.resetButton}`}
                 >
                   התחל מבחן חדש
