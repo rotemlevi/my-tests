@@ -1,0 +1,137 @@
+.container {
+    padding: 20px;
+    font-family: Arial, sans-serif;
+}
+
+.startContainer,
+.testContainer,
+.resultsContainer {
+    text-align: center;
+}
+
+.timerContainer,
+.questionContainer,
+.buttonContainer,
+.resultsContainer {
+    margin-top: 20px;
+}
+
+.questionContainer {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    direction: rtl;
+    width: 100%;
+    max-width: 600px;
+    min-height: 300px; /* Ensure a minimum height */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: right;
+    align-items: right;
+}
+
+.timer {
+    color: #FF5733;
+    font-size: 18px;
+}
+
+.question {
+    font-size: 18px;
+}
+
+.option {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.radio {
+    margin-left: 10px;
+    /* Changed from margin-right to margin-left for RTL */
+}
+
+.label {
+    flex: 1;
+    text-align: right;
+    /* Align text to the right for RTL */
+}
+
+.fixedLabel {
+    width: 300px;
+}
+
+.button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 5px;
+    color: white;
+}
+
+.button:hover {
+    opacity: 0.8;
+}
+
+.disabledButton {
+    background-color: #b0c4de;
+    cursor: not-allowed;
+}
+
+.submitButton {
+    background-color: #FF5733;
+}
+
+.navButton {
+    background-color: #2196F3;
+}
+
+.reportButton {
+    background-color: #FF5733;
+}
+
+.resetButton {
+    background-color: #f44336;
+}
+
+.resultsTitle {
+    color: #4CAF50;
+}
+
+.result {
+    background-color: #f8f8f8;
+    padding: 20px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+
+.correct {
+    background-color: #d4edda;
+}
+
+.incorrect {
+    background-color: #f8d7da;
+}
+
+.finalScore {
+    color: #FF5733;
+}
+
+@media (max-width: 600px) {
+    .button {
+        font-size: 0.875rem;
+        padding: 0.75rem 1.5rem;
+    }
+
+    .question,
+    .timer {
+        font-size: 1.25rem;
+    }
+
+    .fixedLabel {
+        width: auto;
+        flex: 1;
+    }
+}

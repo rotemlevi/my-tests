@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import md5 from 'md5';
+import styles from '../styles/Home.module.css';
 
 function toBase64(str: string): string {
   const uint8Array = new TextEncoder().encode(str);
@@ -278,82 +279,66 @@ const Home = () => {
   const remainingTime = initialTime - elapsedTime;
 
   return (
-    <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif' }}>
+    <div className={styles.container}>
       {!showResults ? (
         <>
           {!testStarted ? (
-            <div>
-              <button onClick={handleStart} style={{ padding: '10px 20px', backgroundColor: '#4CAF50', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>
-                התחל מבחן
-              </button>
+            <div className={styles.startContainer}>
+              <button onClick={handleStart} className={styles.button}>התחל מבחן</button>
             </div>
           ) : (
-            <div>
-              <div>
-                <p style={{ color: '#FF5733', fontSize: '18px' }}>זמן שנותר: {formatTime(remainingTime)}</p>
+            <div className={styles.testContainer}>
+              <div className={styles.timerContainer}>
+                <p className={styles.timer}>זמן שנותר: {formatTime(remainingTime)}</p>
               </div>
-              <div style={{ backgroundColor: '#f9f9f9', padding: '20px', borderRadius: '5px', boxShadow: '0 0 10px rgba(0,0,0,0.1)' }}>
-                <p style={{ fontSize: '18px' }}>שאלה {currentQuestionIndex + 1}: {questions[currentQuestionIndex]?.question}</p>
+              <div className={styles.questionContainer}>
+                <p className={styles.question}>שאלה {currentQuestionIndex + 1}: {questions[currentQuestionIndex]?.question}</p>
                 {questions[currentQuestionIndex]?.options.map((option, i) => (
-                  <div key={i} style={{ marginBottom: '10px' }}>
+                  <div key={i} className={styles.option}>
                     <input
                       type="radio"
                       name={`question-${currentQuestionIndex}`}
                       value={i}
                       checked={answers[currentQuestionIndex] === i}
                       onChange={() => handleOptionChange(i)}
-                      style={{ marginRight: '10px' }}
+                      className={styles.radio}
                     />
-                    <label>{option}</label>
+                    <label className={styles.fixedLabel}>{option}</label>
                   </div>
                 ))}
               </div>
-              <div style={{ marginTop: '20px' }}>
-                  <button 
-                    onClick={handlePrev} 
-                    disabled={currentQuestionIndex < 1} 
-                    style={{ 
-                      padding: '10px 20px', 
-                      backgroundColor: currentQuestionIndex < 1 ? '#b0c4de' : '#2196F3', 
-                      color: 'white', 
-                      border: 'none', 
-                      borderRadius: '5px', 
-                      cursor: currentQuestionIndex < 1 ? 'not-allowed' : 'pointer', 
-                      marginRight: '10px' 
-                    }}>
-                      הקודם
-                  </button>
+              <div className={styles.buttonContainer}>
+                <button 
+                  onClick={handlePrev} 
+                  disabled={currentQuestionIndex < 1} 
+                  className={`${styles.button} ${currentQuestionIndex < 1 ? styles.disabledButton : styles.navButton  }`}
+                >
+                  הקודם
+                </button>
                 <button 
                   onClick={handleNext} 
                   disabled={currentQuestionIndex >= questions.length - 1} 
-                  style={{ 
-                    padding: '10px 20px', 
-                    backgroundColor: currentQuestionIndex >= questions.length - 1 ? '#b0c4de' : '#2196F3', 
-                    color: 'white', 
-                    border: 'none', 
-                    borderRadius: '5px', 
-                    cursor: currentQuestionIndex >= questions.length - 1 ? 'not-allowed' : 'pointer' 
-                  }}>הבא
+                  className={`${styles.button} ${currentQuestionIndex >= questions.length - 1 ? styles.disabledButton : styles.navButton}`}
+                >
+                  הבא
                 </button>
-                  <button 
-                    onClick={handleSubmit} 
-                    disabled={currentQuestionIndex !== questions.length - 1} 
-                    style={{ 
-                      padding: '10px 20px', 
-                      backgroundColor: currentQuestionIndex >= questions.length - 1 ? '#FF5733' : '#b0c4de', 
-                      color: 'white', 
-                      border: 'none', 
-                      borderRadius: '5px', 
-                      cursor: 'pointer', 
-                      marginLeft: '10px' 
-                    }}
-                  >
-                    שלח
-                  </button>
-                <button disabled onClick={reportBadQuestion} style={{ padding: '10px 20px', backgroundColor: '#FF5733', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer', marginLeft: '10px' }}>
+                <button 
+                  onClick={handleSubmit} 
+                  disabled={currentQuestionIndex !== questions.length - 1} 
+                  className={`${styles.button} ${currentQuestionIndex !== questions.length - 1 ? styles.disabledButton : styles.submitButton}`}
+                >
+                  שלח
+                </button>
+                <button 
+                  onClick={reportBadQuestion} 
+                  className={`${styles.button} ${styles.reportButton}`}
+                >
                   דווח על שאלה
                 </button>
-                <button onClick={resetGame} style={{ padding: '10px 20px', backgroundColor: '#f44336', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer', marginLeft: '10px' }}>
+                <button 
+                  onClick={resetGame} 
+                  className={`${styles.button} ${styles.resetButton}`}
+                >
                   התחל מבחן חדש
                 </button>
               </div>
@@ -361,21 +346,19 @@ const Home = () => {
           )}
         </>
       ) : (
-        <div>
-          <h2 style={{ color: '#4CAF50' }}>תוצאות:</h2>
+        <div className={styles.resultsContainer}>
+          <h2 className={styles.resultsTitle}>תוצאות:</h2>
           {results.map((result, index) => (
-            <div key={index} style={{ backgroundColor: result.isCorrect ? '#d4edda' : '#f8d7da', padding: '20px', marginBottom: '10px', borderRadius: '5px' }}>
+            <div key={index} className={`${styles.result} ${result.isCorrect ? styles.correct : styles.incorrect}`}>
               <p>{result.question}</p>
-              <p>התשובה שלך: { questions[index].options[result.userAnswer] ?? "לא נבחרה תשובה"}</p>
+              <p>התשובה שלך: {questions[index].options[result.userAnswer] ?? "לא נבחרה תשובה"}</p>
               <p>התשובה הנכונה: {questions[index].options[result.correct]}</p>
               <p>{result.isCorrect ? 'נכון' : 'לא נכון'}</p>
               <p>זמן שלקח לענות: {result.timeTaken.toFixed(2)} דקות</p>
             </div>
           ))}
-          <h3 style={{ color: '#FF5733' }}>ניקוד סופי: {score} מתוך {questions.length}</h3>
-          <button onClick={resetGame} style={{ padding: '10px 20px', backgroundColor: '#4CAF50', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>
-            חזור
-          </button>
+          <h3 className={styles.finalScore}>ניקוד סופי: {score} מתוך {questions.length}</h3>
+          <button onClick={resetGame} className={styles.button}>חזור</button>
         </div>
       )}
     </div>
